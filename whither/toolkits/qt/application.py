@@ -31,7 +31,7 @@
 import sys
 
 # 3rd-Party Libs
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QCoreApplication
 from PyQt5.QtWidgets import QApplication
 
 # This Lib
@@ -43,11 +43,12 @@ class QtApplication(Application):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(name='_app', *args, **kwargs)
 
+        QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+
         self.widget = QApplication(sys.argv)
         self.is_qt, self.is_gtk = True, False
         self.desktop = self.widget.desktop()
-
-        self.widget.setAttribute(Qt.AA_EnableHighDpiScaling)
 
     def _set_window_size_position(self) -> None:
         if self._config.window.no_desktop_env is False:
