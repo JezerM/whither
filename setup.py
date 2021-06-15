@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='whither',
-    version='0.3.2',
+    version='0.3.3',
     packages=[
         'whither',
         'whither.base',
@@ -18,7 +18,7 @@ setup(
     description='Desktop application SDK for creating Universal Linux Applications.',
     install_requires=[
         'PyQt5',
-        'ruamel.yaml<0.15',
+        'ruamel.yaml',
     ],
     package_data={
         '': ['whither.yml'],
