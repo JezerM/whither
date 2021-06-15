@@ -34,6 +34,7 @@ from typing import (
 
 # 3rd-Party Libs
 from PyQt5.QtWebChannel import QWebChannel
+from PyQt5.QtWebEngineCore import QWebEngineUrlScheme
 from PyQt5.QtWebEngineWidgets import (
     QWebEnginePage,
     QWebEngineView,
@@ -74,6 +75,10 @@ ENABLED_SETTINGS = [
     'FocusOnNavigationEnabled',      # Qt 5.11+
 ]
 
+os.environ["QT_DEVICE_PIXEL_RATIO"] = "0"
+os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+os.environ["QT_SCREEN_SCALE_FACTORS"] = "1"
+os.environ["QT_SCALE_FACTOR"] = "1"
 
 class QtWebContainer(WebContainer):
 
@@ -82,6 +87,13 @@ class QtWebContainer(WebContainer):
 
         if self._config.debug_mode:
             os.environ['QTWEBENGINE_REMOTE_DEBUGGING'] = '12345'
+
+        self.url_scheme = QWebEngineUrlScheme(b"web-greeter")
+        self.url_scheme.setDefaultPort(QWebEngineUrlScheme.SpecialPort.PortUnspecified)
+        self.url_scheme.setFlags(QWebEngineUrlScheme.Flag.SecureScheme or
+                                 QWebEngineUrlScheme.Flag.LocalScheme or
+                                 QWebEngineUrlScheme.Flag.LocalAccessAllowed)
+        QWebEngineUrlScheme.registerScheme(self.url_scheme)
 
         self.profile = QWebEngineProfile.defaultProfile()
         self.interceptor = QtUrlRequestInterceptor()
@@ -104,7 +116,7 @@ class QtWebContainer(WebContainer):
             self.view.setContextMenuPolicy(Qt.PreventContextMenu)
 
         if not self._config.allow_remote_urls:
-            self.profile.setRequestInterceptor(self.interceptor)
+            self.profile.setUrlRequestInterceptor(self.interceptor)
 
         if self._config.entry_point.autoload:
             self.initialize_bridge_objects()
@@ -177,8 +189,10 @@ class QtWebContainer(WebContainer):
             return
 
         if not url.startswith('file'):
+            # url = 'file://{0}'.format(url)
             url = 'web-greeter:/{0}'.format(url)
 
+        # self.logger.debug(QUrl(url).__str__())
         self.page.load(QUrl(url))
 
     def load_script(self, path: Url, name: str):

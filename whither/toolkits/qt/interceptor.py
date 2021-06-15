@@ -38,8 +38,10 @@ class QtUrlRequestInterceptor(QWebEngineUrlRequestInterceptor):
 
     def intercept_request(self, info: QWebEngineUrlRequestInfo) -> None:
         url = info.requestUrl().toString()
-        not_data_uri = 'data' != info.requestUrl().scheme()
+        not_data_uri = 'web-greeter' != info.requestUrl().scheme()
         not_local_file = not info.requestUrl().isLocalFile()
+
+        # print(url)
 
         not_devtools = (
             not url.startswith('http://127.0.0.1') and not url.startswith('ws://127.0.0.1')
@@ -47,7 +49,7 @@ class QtUrlRequestInterceptor(QWebEngineUrlRequestInterceptor):
 
         block_request = not_devtools and not_data_uri and not_local_file
 
-        #info.block(block_request)
+        info.block(block_request) # Block everything that is not allowed
 
     def interceptRequest(self, info: QWebEngineUrlRequestInfo) -> None:
         self.intercept_request(info)

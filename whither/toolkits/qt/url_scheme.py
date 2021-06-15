@@ -42,19 +42,28 @@ class QtUrlSchemeHandler(QWebEngineUrlSchemeHandler):
         path = job.requestUrl().path()
         path = os.path.realpath(path)
 
-        print(path)
+        if path.startswith("/usr/usr/"):
+            path = path.replace("/usr/usr/", "/usr/")
+        elif path.startswith("/usr/var/"):
+            path = path.replace("/usr/var/", "/var/")
+
+        # print("PATH", path)
 
         if not path:
+            # print("JOB FAIL", path)
             job.fail(QWebEngineUrlRequestJob.UrlInvalid)
             return
 
         if not os.path.exists(path):
+            # print("NOT FOUND", path)
             job.fail(QWebEngineUrlRequestJob.UrlNotFound)
             return
 
         try:
             with open(path, 'rb') as file:
                 content_type = mimetypes.guess_type(path)
+                if not content_type[0]:
+                    content_type = ["text/plain", None]
                 buffer = QBuffer(parent=self)
 
                 buffer.open(QIODevice.WriteOnly)
