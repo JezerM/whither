@@ -33,6 +33,8 @@ try:
     from .qt.web_container import QtWebContainer as WebContainer
     from .qt.bridge import Bridge as bridge, BridgeObject
     from .qt.interceptor import QtUrlRequestInterceptor as UrlRequestInterceptor
+    from .qt.web_page import WebPage as WebPage
+    from .qt.window import QtMainWindow as MainWindow
     from PyQt5.QtCore import QVariant as Variant
 except ImportError:
     from .gtk.window import GtkWindow as Window

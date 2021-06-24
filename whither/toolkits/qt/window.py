@@ -41,7 +41,7 @@ from PyQt5.QtCore import (
     QEvent,
     Qt,
 )
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QKeyEvent
 
 # This Library
 from whither.base.objects import Window
@@ -54,6 +54,9 @@ WINDOW_STATES = {
     'FULLSCREEN': Qt.WindowFullScreen,
 }  # type: Dict[str, Qt.WindowState]
 
+class QtMainWindow(QMainWindow):
+    def keyPressEvent(self, keyEvent: QKeyEvent):
+        super(QtMainWindow, self).keyPressEvent(keyEvent)
 
 class QtWindow(Window):
 
@@ -61,7 +64,7 @@ class QtWindow(Window):
         super().__init__(name=name, *args, **kwargs)
 
         self.states = WINDOW_STATES  # type: Dict[str, Qt.WindowState]
-        self.widget = None           # type: QWidget
+        self.widget = None           # type: QWidget | QMainWindow
 
         self._initialize()
 
@@ -69,7 +72,7 @@ class QtWindow(Window):
         config, toolbar_config, initial_state = super()._initialize()
 
         if not self._app.windows:
-            self.widget = QMainWindow()
+            self.widget = QtMainWindow()
             this_window = 'Main Window'
         else:
             self.widget = QWidget()

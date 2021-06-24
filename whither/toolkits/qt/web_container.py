@@ -53,7 +53,7 @@ from whither.base.objects import WebContainer
 from .devtools import DevTools
 from .interceptor import QtUrlRequestInterceptor
 from .url_scheme import QtUrlSchemeHandler
-
+from .web_page import WebPage
 
 # Typing Helpers
 BridgeObjects = Tuple['BridgeObject']
@@ -100,7 +100,8 @@ class QtWebContainer(WebContainer):
         self.url_scheme_handler = QtUrlSchemeHandler()
 
         self.view = QWebEngineView(parent=self._main_window.widget)
-        self.page = self.view.page()
+        self.page = WebPage()
+        self.view.setPage(self.page)
 
         self.channel = QWebChannel(self.page)
         self.bridge_initialized = False
