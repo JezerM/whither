@@ -191,7 +191,7 @@ class QtWebContainer(WebContainer):
 
         if not url.startswith('file'):
             # url = 'file://{0}'.format(url)
-            url = 'web-greeter:/{0}'.format(url)
+            url = 'web-greeter://{0}'.format(url)
 
         # self.logger.debug(QUrl(url).__str__())
         self.page.load(QUrl(url))

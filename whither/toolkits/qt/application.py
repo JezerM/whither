@@ -31,7 +31,7 @@
 import sys
 
 # 3rd-Party Libs
-from PyQt5.QtCore import Qt, QCoreApplication
+from PyQt5.QtCore import Qt, QCoreApplication, QObject
 from PyQt5.QtWidgets import QApplication
 
 # This Lib
@@ -49,6 +49,11 @@ class QtApplication(Application):
         self.widget = QApplication(sys.argv)
         self.is_qt, self.is_gtk = True, False
         self.desktop = self.widget.desktop()
+
+        self.widget.aboutToQuit.connect(self._before_exit)
+
+    def _before_exit(self) -> None:
+        pass
 
     def _set_window_size_position(self) -> None:
         if self._config.window.no_desktop_env is False:

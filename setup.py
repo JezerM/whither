@@ -1,6 +1,9 @@
 # Always prefer setuptools over distutils
 from setuptools import setup
 
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
 setup(
     name='whither',
     version='0.3.4',
@@ -11,11 +14,13 @@ setup(
         'whither.toolkits.qt',
         'whither.toolkits.gtk',
     ],
-    url='https://github.com/antergos/whither',
+    url='https://github.com/JezerM/whither',
     license='GPL-3.0',
     author='Antergos Linux Project',
     author_email='dustin@antergos.com',
     description='Desktop application SDK for creating Universal Linux Applications.',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     install_requires=[
         'PyQt5',
         'ruamel.yaml',

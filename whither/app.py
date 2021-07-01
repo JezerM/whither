@@ -62,6 +62,9 @@ class App(Application):
             setattr(self, 'config', ConfigLoader(key, __file__).config['app'])
             setattr(self, '_config', ConfigLoader(key, __file__).config['whither'])
 
+    def _before_exit(self):
+        pass
+
     def _before_web_container_init(self):
         pass
 
