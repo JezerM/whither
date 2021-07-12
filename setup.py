@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='whither',
-    version='0.3.4',
+    version='0.3.5',
     packages=[
         'whither',
         'whither.base',
