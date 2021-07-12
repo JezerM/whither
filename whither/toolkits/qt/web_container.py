@@ -88,7 +88,8 @@ class QtWebContainer(WebContainer):
         if self._config.debug_mode:
             os.environ['QTWEBENGINE_REMOTE_DEBUGGING'] = '12345'
 
-        self.url_scheme = QWebEngineUrlScheme(b"web-greeter")
+        url_scheme = self._config.url_scheme
+        self.url_scheme = QWebEngineUrlScheme(url_scheme.encode())
         self.url_scheme.setDefaultPort(QWebEngineUrlScheme.SpecialPort.PortUnspecified)
         self.url_scheme.setFlags(QWebEngineUrlScheme.Flag.SecureScheme or
                                  QWebEngineUrlScheme.Flag.LocalScheme or
@@ -96,7 +97,7 @@ class QtWebContainer(WebContainer):
         QWebEngineUrlScheme.registerScheme(self.url_scheme)
 
         self.profile = QWebEngineProfile.defaultProfile()
-        self.interceptor = QtUrlRequestInterceptor()
+        self.interceptor = QtUrlRequestInterceptor(url_scheme)
         self.url_scheme_handler = QtUrlSchemeHandler()
 
         self.view = QWebEngineView(parent=self._main_window.widget)
@@ -106,7 +107,7 @@ class QtWebContainer(WebContainer):
         self.channel = QWebChannel(self.page)
         self.bridge_initialized = False
 
-        self.profile.installUrlSchemeHandler(b'web-greeter', self.url_scheme_handler)
+        self.profile.installUrlSchemeHandler(url_scheme.encode(), self.url_scheme_handler)
 
         self._initialize_page(self.page)
 
@@ -191,7 +192,7 @@ class QtWebContainer(WebContainer):
 
         if not url.startswith('file'):
             # url = 'file://{0}'.format(url)
-            url = 'web-greeter://{0}'.format(url)
+            url = '{0}://{1}'.format(self._config.url_scheme, url)
 
         # self.logger.debug(QUrl(url).__str__())
         self.page.load(QUrl(url))

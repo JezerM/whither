@@ -36,9 +36,13 @@ from PyQt5.QtWebEngineCore import (
 
 class QtUrlRequestInterceptor(QWebEngineUrlRequestInterceptor):
 
+    def __init__(self, url_scheme: str):
+        super().__init__()
+        self._url_scheme = url_scheme
+
     def intercept_request(self, info: QWebEngineUrlRequestInfo) -> None:
         url = info.requestUrl().toString()
-        not_webg_uri = 'web-greeter' != info.requestUrl().scheme()
+        not_webg_uri = self._url_scheme != info.requestUrl().scheme()
         not_data_uri = 'data' != info.requestUrl().scheme()
         not_local_file = not info.requestUrl().isLocalFile()
 

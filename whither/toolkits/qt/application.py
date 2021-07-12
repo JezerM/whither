@@ -28,10 +28,9 @@
 """ Wrapper for QMainWindow """
 
 # Standard Lib
-import sys
 
 # 3rd-Party Libs
-from PyQt5.QtCore import Qt, QCoreApplication, QObject
+from PyQt5.QtCore import Qt, QCoreApplication
 from PyQt5.QtWidgets import QApplication
 
 # This Lib
@@ -46,7 +45,7 @@ class QtApplication(Application):
         QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
         QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 
-        self.widget = QApplication(sys.argv)
+        self.widget = QApplication([])
         self.is_qt, self.is_gtk = True, False
         self.desktop = self.widget.desktop()
 

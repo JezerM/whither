@@ -12,6 +12,8 @@ Example:
             arg: --launch-immediately
         # Unique identifier string (dbus-style)
         app_id: com.antergos.cnchi
+        # Custom url scheme
+        url_scheme: whither
         context_menu:
             enabled: False
         entry_point:
