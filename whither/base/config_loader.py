@@ -65,7 +65,7 @@ class ConfigLoader:
             config = yaml.safe_load(data)
             config = config[key]
 
-        return {key: value for key, value in config.items()}
+        return config
 
     def load_default_config(self) -> dict:
         load_from_orig = self.load_from

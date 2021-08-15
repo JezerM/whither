@@ -23,6 +23,7 @@ setup(
     long_description_content_type="text/markdown",
     install_requires=[
         'PyQt5',
+        'PyQtWebEngine',
         'ruamel.yaml',
     ],
     package_data={
